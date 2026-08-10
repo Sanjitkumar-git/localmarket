@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:localmarket/widget/app_colors.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -15,20 +16,24 @@ class SignInPage extends StatelessWidget {
               width: 300,
               height:300,
               decoration:BoxDecoration(
-                color:Colors.white,
+                color:AppColors.tertiary,
                 borderRadius:BorderRadius.circular(10)
               ),
               child:Column(
                 children: [
                   TextField(
+                    style: TextStyle(color:AppColors.textPrimary),
                     decoration: InputDecoration(
+                      labelStyle: TextStyle(color:AppColors.textPrimary),
                       labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 4),
                    TextField(
+                    style: TextStyle(color:AppColors.textPrimary),
                     decoration: InputDecoration(
+                      labelStyle: TextStyle(color:AppColors.textPrimary),
                       labelText: 'Password',
                       border: OutlineInputBorder(),
                     ),
