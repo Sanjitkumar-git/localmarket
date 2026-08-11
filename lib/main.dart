@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localmarket/shopkeeper/auth/sign_in.dart';
 import 'package:localmarket/users/auth/sign_in.dart';
+import 'package:localmarket/widget/language_selection.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,30 +12,27 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:
-    
-// ============================================================
-// LOGIN ROLE SWITCH
-// Uncomment ONLY the page you want to test.
-//
-// USER LOGIN:
-// SignInPage(),
-//
-// PARTNER LOGIN:
-// PartnerSignInPage(),
-//
-// Keep the other page commented out.
-// ============================================================
+      home: const LanguageSelectionPage(),
 
-// USER
-SignInPage(),
+      // ============================================================
+      // LOGIN ROLE SWITCH
+      // Uncomment ONLY the page you want to test.
+      //
+      // USER LOGIN:
+      // SignInPage(),
+      //
+      // PARTNER LOGIN:
+      // PartnerSignInPage(),
+      //
+      // Keep the other page commented out.
+      // ============================================================
 
-// PARTNER
-// PartnerSignInPage(),
+      // USER
+      // SignInPage(),
+
+      // PARTNER
     );
-
   }
 }

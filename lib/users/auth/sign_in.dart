@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
 import 'package:localmarket/widget/app_padding.dart';
+import 'package:localmarket/widget/app_radius.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -33,8 +34,8 @@ class SignInPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: 300,
-                  height:300,
+                  width: 500,
+                  height:500,
                   decoration:BoxDecoration(
                     color:AppColors.tertiary,
                     borderRadius:BorderRadius.circular(10)
@@ -46,15 +47,25 @@ class SignInPage extends StatelessWidget {
                       const SizedBox(height: 6,),
                       Text('Please log in to continue to your account.',style: TextStyle(color:AppColors.textPrimary, fontSize: 14, fontWeight: AppFontWeights.regular),),
                        const SizedBox(height: 10,),
-                      TextField(
-                        style: TextStyle(color:AppColors.textPrimary),
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color:AppColors.textPrimary),
-                          labelText: 'Email',
-                          border: OutlineInputBorder(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          style: TextStyle(color:AppColors.textPrimary),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: AppRadius.medium,
+                        ),
+                            labelStyle: TextStyle(color:AppColors.textPrimary),
+                            labelText: 'Email',
+                            
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                        TextField(
                         style: TextStyle(color:AppColors.textPrimary),
                         decoration: InputDecoration(

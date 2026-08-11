@@ -29,9 +29,9 @@ class AppColors {
   // BACKGROUND
   // ============================================================
 
-  static const Color background = Color(0xFFF8FAFC);
+  static const Color background = Color(0xFFEFF4FD);
   static const Color surface = Colors.white;
-  static const Color card = Color(0xFFEFF4FD);
+  static const Color card = Color(0xFFF8FAFC);
 
   // ============================================================
   // TEXT

@@ -19,46 +19,35 @@ class AppPadding {
   // HORIZONTAL
   // ============================================================
 
-  static const EdgeInsets horizontalSm =
-      EdgeInsets.symmetric(horizontal: 8);
+  static const EdgeInsets horizontalSm = EdgeInsets.symmetric(horizontal: 8);
 
-  static const EdgeInsets horizontalMd =
-      EdgeInsets.symmetric(horizontal: 12);
+  static const EdgeInsets horizontalMd = EdgeInsets.symmetric(horizontal: 12);
 
-  static const EdgeInsets horizontalLg =
-      EdgeInsets.symmetric(horizontal: 16);
+  static const EdgeInsets horizontalLg = EdgeInsets.symmetric(horizontal: 16);
 
-  static const EdgeInsets horizontalXl =
-      EdgeInsets.symmetric(horizontal: 24);
+  static const EdgeInsets horizontalXl = EdgeInsets.symmetric(horizontal: 24);
 
   // ============================================================
   // VERTICAL
   // ============================================================
 
-  static const EdgeInsets verticalSm =
-      EdgeInsets.symmetric(vertical: 8);
+  static const EdgeInsets verticalSm = EdgeInsets.symmetric(vertical: 8);
 
-  static const EdgeInsets verticalMd =
-      EdgeInsets.symmetric(vertical: 12);
+  static const EdgeInsets verticalMd = EdgeInsets.symmetric(vertical: 12);
 
-  static const EdgeInsets verticalLg =
-      EdgeInsets.symmetric(vertical: 16);
+  static const EdgeInsets verticalLg = EdgeInsets.symmetric(vertical: 16);
 
-  static const EdgeInsets verticalXl =
-      EdgeInsets.symmetric(vertical: 24);
+  static const EdgeInsets verticalXl = EdgeInsets.symmetric(vertical: 24);
 
   // ============================================================
   // SCREEN
   // ============================================================
 
-  static const EdgeInsets screenMobile =
-      EdgeInsets.symmetric(horizontal: 16);
+  static const EdgeInsets screenMobile = EdgeInsets.symmetric(horizontal: 16);
 
-  static const EdgeInsets screenTablet =
-      EdgeInsets.symmetric(horizontal: 32);
+  static const EdgeInsets screenTablet = EdgeInsets.symmetric(horizontal: 32);
 
-  static const EdgeInsets screenDesktop =
-      EdgeInsets.symmetric(horizontal: 48);
+  static const EdgeInsets screenDesktop = EdgeInsets.symmetric(horizontal: 48);
 
   // ============================================================
   // CARD
