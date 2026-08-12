@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:localmarket/shopkeeper/auth/sign_in.dart';
 import 'package:localmarket/widget/app_colors.dart';
@@ -565,7 +567,71 @@ class _PartnerSignUpPageState extends State<PartnerSignUpPage> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                  // 1. Firebase Authentication account create
+                                  final credential = await FirebaseAuth.instance
+                                      .createUserWithEmailAndPassword(
+                                        email: emailController.text.trim(),
+                                        password: _passwordController.text
+                                            .trim(),
+                                      );
+
+                                  await FirebaseFirestore.instance
+                                      .collection('shopkeepers')
+                                      .doc(credential.user!.uid)
+                                      .set({
+                                        'fullName': fullNameController.text
+                                            .trim(),
+                                        'email': emailController.text.trim(),
+                                        'storeName': storeNameController.text
+                                            .trim(),
+                                        'categories': selectedCategories,
+                                        'role': 'partner',
+
+                                        'createdAt':
+                                            FieldValue.serverTimestamp(),
+                                      });
+
+                                  if (!context.mounted) return;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Store registered successfully',
+                                      ),
+                                    ),
+                                  );
+
+                                  // Sign In page
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PartnerSignInPage(),
+                                    ),
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  String message = 'Registration failed';
+
+                                  if (e.code == 'email-already-in-use') {
+                                    message =
+                                        'This email is already registered.';
+                                  } else if (e.code == 'weak-password') {
+                                    message = 'Password is too weak.';
+                                  } else if (e.code == 'invalid-email') {
+                                    message = 'Invalid email address.';
+                                  }
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(message)),
+                                  );
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Error: $e')),
+                                  );
+                                }
+                              },
                               child: Text(
                                 AppLanguage.tr(
                                   en: 'Register Store',

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "251612080137",
+    "project_id": "nearshopshopkeeper",
+    "storage_bucket": "nearshopshopkeeper.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251612080137:android:4ff400bac7d0261b33f0d8",
+        "android_client_info": {
+          "package_name": "com.example.localmarket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4gLWL7BXEcYjwfWqkpufyDtLp0BZ1ddI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

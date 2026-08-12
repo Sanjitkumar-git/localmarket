@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:localmarket/shopkeeper/auth/forgot_password.dart';
 import 'package:localmarket/shopkeeper/auth/sign_up.dart';
+import 'package:localmarket/shopkeeper/home/dashboard_screen.dart';
 
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
@@ -21,13 +25,37 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
   final _formKey = GlobalKey<FormState>();
 
   final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
 
   bool _isPasswordVisible = false;
 
   @override
   void dispose() {
     _passwordController.dispose();
+    _emailController.dispose();
     super.dispose();
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final googleSignIn = GoogleSignIn.instance;
+
+      await googleSignIn.initialize();
+
+      final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
+
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      print('Google Sign-In Successful');
+    } catch (e) {
+      print('Google Sign-In Error: $e');
+    }
   }
 
   @override
@@ -125,8 +153,9 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
                             padding: AppPadding.horizontalMd,
 
                             child: TextField(
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
                               style: TextStyle(color: AppColors.textPrimary),
-
                               decoration: InputDecoration(
                                 labelStyle: TextStyle(
                                   color: AppColors.textPrimary,
@@ -259,7 +288,115 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
                                 ),
                               ),
 
-                              onPressed: () {},
+                              onPressed: () async {
+                                if (!_formKey.currentState!.validate()) {
+                                  return;
+                                }
+
+                                try {
+                                  // 1. Firebase Authentication se login
+                                  final credential = await FirebaseAuth.instance
+                                      .signInWithEmailAndPassword(
+                                        email: _emailController.text.trim(),
+                                        password: _passwordController.text
+                                            .trim(),
+                                      );
+
+                                  // 2. Logged-in user ki UID
+                                  final uid = credential.user!.uid;
+
+                                  // 3. Firestore mein partner profile check
+                                  final partnerDoc = await FirebaseFirestore
+                                      .instance
+                                      .collection('shopkeepers')
+                                      .doc(uid)
+                                      .get();
+
+                                  // 4. Partner profile nahi mila
+                                  if (!partnerDoc.exists) {
+                                    await FirebaseAuth.instance.signOut();
+
+                                    throw Exception(
+                                      'Partner account not found.',
+                                    );
+                                  }
+
+                                  // 5. Partner data
+                                  final data = partnerDoc.data();
+
+                                  // 6. Role check
+                                  if (data?['role'] != 'partner') {
+                                    await FirebaseAuth.instance.signOut();
+
+                                    throw Exception(
+                                      'This account is not a partner account.',
+                                    );
+                                  }
+
+                                  // 7. Login successful
+                                  if (!context.mounted) return;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Login successful'),
+                                    ),
+                                  );
+
+                                  // 8. Partner Dashboard
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => DashboardScreen(),
+                                    ),
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  String message;
+
+                                  switch (e.code) {
+                                    case 'invalid-email':
+                                      message = 'Please enter a valid email.';
+                                      break;
+
+                                    case 'user-not-found':
+                                      message =
+                                          'No account found with this email.';
+                                      break;
+
+                                    case 'wrong-password':
+                                    case 'invalid-credential':
+                                      message = 'Incorrect email or password.';
+                                      break;
+
+                                    case 'user-disabled':
+                                      message =
+                                          'This account has been disabled.';
+                                      break;
+
+                                    default:
+                                      message =
+                                          'Login failed. Please try again.';
+                                  }
+
+                                  if (!context.mounted) return;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(message)),
+                                  );
+                                } catch (e) {
+                                  if (!context.mounted) return;
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        e.toString().replaceFirst(
+                                          'Exception: ',
+                                          '',
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
 
                               child: Text(
                                 AppLanguage.tr(
@@ -307,7 +444,9 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
                   height: 55,
 
                   child: OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await signInWithGoogle();
+                    },
 
                     icon: const FaIcon(
                       FontAwesomeIcons.google,
