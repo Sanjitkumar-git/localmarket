@@ -4,6 +4,7 @@ import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
 import 'package:localmarket/widget/app_language.dart';
+import 'package:localmarket/widget/role_selection.dart';
 
 class LanguageSelectionPage extends StatefulWidget {
   const LanguageSelectionPage({super.key});
@@ -22,12 +23,11 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
   ];
 
   void _continue() {
-    // Selected language ko globally set karna
     AppLanguage.currentLanguage = _selectedLanguage;
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const PartnerSignInPage()),
+      MaterialPageRoute(builder: (context) => RoleSelectionPage()),
     );
   }
 
@@ -92,7 +92,7 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? AppColors.primary.withOpacity(0.1)
+                                ? AppColors.primary.withValues(alpha: 0.1)
                                 : Colors.transparent,
                             border: Border.all(
                               color: isSelected

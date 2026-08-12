@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
+import 'package:localmarket/widget/app_icon.dart';
 import 'package:localmarket/widget/app_language.dart';
 import 'package:localmarket/widget/app_padding.dart';
 
@@ -37,10 +39,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Icon(
-                        Icons.storefront_outlined,
-                        color: AppColors.primary,
-                        size: AppTextSizes.h4,
+                      child: AppIcon(
+                        iconWidget: const FaIcon(
+                          FontAwesomeIcons.store,
+                          size: 30,
+                          color: AppColors.primaryDark,
+                        ),
                       ),
                     ),
 
@@ -153,18 +157,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text(
-                          AppLanguage.tr(
-                            en: 'Back to Login',
-                            hi: 'लॉगिन पर वापस जाएं',
-                            ne: 'लगइनमा फर्कनुहोस्',
-                          ),
-                        ),
                         style: TextButton.styleFrom(
                           foregroundColor: AppColors.primary,
                           textStyle: TextStyle(
                             fontSize: AppTextSizes.button,
                             fontWeight: AppFontWeights.medium,
+                          ),
+                        ),
+                        child: Text(
+                          AppLanguage.tr(
+                            en: 'Back to Login',
+                            hi: 'लॉगिन पर वापस जाएं',
+                            ne: 'लगइनमा फर्कनुहोस्',
                           ),
                         ),
                       ),

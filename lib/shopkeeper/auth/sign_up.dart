@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localmarket/shopkeeper/auth/sign_in.dart';
-import 'package:localmarket/users/auth/sign_in.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
