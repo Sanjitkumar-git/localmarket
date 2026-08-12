@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:localmarket/shopkeeper/auth/forgot_password.dart';
+import 'package:localmarket/shopkeeper/auth/sign_up.dart';
 
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
@@ -49,7 +51,7 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
 
                   child: Container(
                     width: 350,
-                    height: 360,
+                    height: 390,
 
                     decoration: BoxDecoration(
                       color: AppColors.card,
@@ -85,9 +87,9 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
                           // Merchant Portal
                           Text(
                             AppLanguage.tr(
-                              en: 'Merchant Portal',
-                              hi: 'मर्चेंट पोर्टल',
-                              ne: 'व्यापारी पोर्टल',
+                              en: 'NearShop Merchant',
+                              hi: 'नियरशॉप व्यापारी',
+                              ne: 'नियरशप व्यापारी',
                             ),
 
                             style: TextStyle(
@@ -215,7 +217,15 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
                             alignment: Alignment.centerRight,
 
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordPage(),
+                                  ),
+                                );
+                              },
 
                               child: Text(
                                 AppLanguage.tr(
@@ -330,6 +340,34 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
                     ),
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.person_add_alt_1, color: AppColors.primary),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PartnerSignUpPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      AppLanguage.tr(
+                        en: "Don't have a store? Sign up here",
+                        hi: "स्टोर नहीं है? यहाँ साइन अप करें",
+                        ne: "स्टोर छैन? यहाँ साइन अप गर्नुहोस्",
+                      ),
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: AppTextSizes.md,
+                        fontWeight: AppFontWeights.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
