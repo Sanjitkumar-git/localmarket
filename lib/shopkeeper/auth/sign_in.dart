@@ -13,8 +13,8 @@ class PartnerSignInPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: 300,
-              height:300,
+              width: 400,
+              height:500,
               decoration:BoxDecoration(
                 color:AppColors.tertiary,
                 borderRadius:BorderRadius.circular(10)
