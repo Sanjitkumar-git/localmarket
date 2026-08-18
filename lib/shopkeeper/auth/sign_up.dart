@@ -268,6 +268,8 @@ class _PartnerSignUpPageState extends State<PartnerSignUpPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: MediaQuery.sizeOf(context).height,
@@ -275,14 +277,97 @@ class _PartnerSignUpPageState extends State<PartnerSignUpPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                child: Padding(
-                  padding: AppPadding.card,
-                  child: Container(
-                    width: 350,
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 290,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset(
+                            'assets/shop/signup.jpg',
+                            fit: BoxFit.cover,
+                            alignment: Alignment.center,
+                          ),
+
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0.05),
+                                  Colors.black.withOpacity(0.45),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          Positioned(
+                            top: 18,
+                            left: 18,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.45),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.35),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.storefront_outlined,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 7),
+                                  Text(
+                                    AppLanguage.tr(
+                                      en: 'Create Account',
+                                      hi: 'खाता बनाएँ',
+                                      ne: 'खाता सिर्जना गर्नुहोस्',
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: AppTextSizes.md,
+                                      fontWeight: AppFontWeights.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    margin: const EdgeInsets.only(top: 253),
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
                     decoration: BoxDecoration(
                       color: AppColors.card,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(color: Colors.white.withOpacity(0.7)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.12),
+                          blurRadius: 24,
+                          spreadRadius: 1,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
                     ),
                     child: Form(
                       child: Column(
@@ -650,8 +735,9 @@ class _PartnerSignUpPageState extends State<PartnerSignUpPage> {
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
+              const SizedBox(height: 15),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
