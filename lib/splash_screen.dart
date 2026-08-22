@@ -21,9 +21,6 @@ class SplashPalette {
   static const Color faintText = Color(0xFF94A3B8);
 }
 
-/// ---------------------------------------------------------------------------
-/// Responsive metrics — every size in the screen derives from here.
-/// ---------------------------------------------------------------------------
 @immutable
 class _SplashMetrics {
   const _SplashMetrics._({
@@ -154,7 +151,7 @@ class _SplashScreenState extends State<SplashScreen>
   bool _reduceMotion = false;
 
   static const Duration _introDuration = Duration(milliseconds: 1500);
-  static const Duration _holdDuration = Duration(milliseconds: 2600);
+  static const Duration _holdDuration = Duration(seconds: 4);
 
   @override
   void initState() {

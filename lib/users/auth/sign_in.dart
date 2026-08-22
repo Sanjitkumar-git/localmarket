@@ -25,6 +25,7 @@ class SignInPage extends StatelessWidget {
           constraints: BoxConstraints(
             minHeight: MediaQuery.sizeOf(context).height,
           ),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

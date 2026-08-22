@@ -688,7 +688,6 @@ class _PartnerSignUpPageState extends State<PartnerSignUpPage> {
                                     ),
                                   );
 
-                                  // Sign In page
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

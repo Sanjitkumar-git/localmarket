@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:localmarket/shopkeeper/auth/forgot_password.dart';
+import 'package:localmarket/shopkeeper/auth/shop_registration.dart';
 import 'package:localmarket/shopkeeper/auth/sign_up.dart';
+import 'package:localmarket/shopkeeper/home/bottom_nav.dart';
 import 'package:localmarket/shopkeeper/home/dashboard_screen.dart';
 
 import 'package:localmarket/widget/app_colors.dart';
@@ -107,55 +109,6 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
     }
   }
 
-  Future<void> _verifyPartnerAndOpenDashboard(User user) async {
-    final partnerDoc = await FirebaseFirestore.instance
-        .collection('shopkeepers')
-        .doc(user.uid)
-        .get();
-
-    if (!partnerDoc.exists) {
-      await FirebaseAuth.instance.signOut();
-
-      throw Exception(
-        AppLanguage.tr(
-          en: 'Partner account not found.',
-          hi: 'पार्टनर अकाउंट नहीं मिला।',
-          ne: 'पार्टनर खाता फेला परेन।',
-        ),
-      );
-    }
-
-    final data = partnerDoc.data();
-
-    if (data?['role'] != 'partner') {
-      await FirebaseAuth.instance.signOut();
-
-      throw Exception(
-        AppLanguage.tr(
-          en: 'This account is not a partner account.',
-          hi: 'यह पार्टनर अकाउंट नहीं है।',
-          ne: 'यो पार्टनर खाता होइन।',
-        ),
-      );
-    }
-
-    if (!mounted) return;
-
-    _showMessage(
-      AppLanguage.tr(
-        en: 'Login successful',
-        hi: 'लॉगिन सफल रहा',
-        ne: 'लगइन सफल भयो',
-      ),
-      isError: false,
-    );
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => DashboardScreen()),
-    );
-  }
-
   Future<void> _signInWithEmail() async {
     FocusScope.of(context).unfocus();
 
@@ -199,6 +152,57 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
     }
   }
 
+  Future<void> _verifyPartnerAndOpenDashboard(User user) async {
+    try {
+      final partnerDoc = await FirebaseFirestore.instance
+          .collection('shopkeepers')
+          .doc(user.uid)
+          .get();
+
+      if (!partnerDoc.exists) {
+        if (!mounted) return;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => ShopRegistrationPage(user: user)),
+        );
+        return;
+      }
+
+      final data = partnerDoc.data();
+
+      if (data?['role'] != 'partner') {
+        await FirebaseAuth.instance.signOut();
+
+        throw Exception(
+          AppLanguage.tr(
+            en: 'This account is not a partner account.',
+            hi: 'यह पार्टनर अकाउंट नहीं है।',
+            ne: 'यो पार्टनर खाता होइन।',
+          ),
+        );
+      }
+
+      if (!mounted) return;
+
+      _showMessage(
+        AppLanguage.tr(
+          en: 'Login successful',
+          hi: 'लॉगिन सफल रहा',
+          ne: 'लगइन सफल भयो',
+        ),
+        isError: false,
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const shopkeeperbottom()),
+      );
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<void> _signInWithGoogle() async {
     FocusScope.of(context).unfocus();
 
@@ -208,7 +212,6 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
 
     try {
       final googleSignIn = GoogleSignIn.instance;
-
       await googleSignIn.initialize();
 
       final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
@@ -235,13 +238,12 @@ class _PartnerSignInPageState extends State<PartnerSignInPage> {
         );
       }
 
+      // Verify partner and handle registration
       await _verifyPartnerAndOpenDashboard(user);
     } on FirebaseAuthException catch (error) {
       _showMessage(_firebaseErrorMessage(error));
     } catch (error) {
       final message = error.toString();
-
-      // Google popup manually close होने पर unnecessary message न दिखाएं।
       if (!message.toLowerCase().contains('cancel')) {
         _showMessage(message.replaceFirst('Exception: ', ''));
       }

@@ -349,7 +349,7 @@ class RoleSelectionPage extends StatelessWidget {
                                           AppLanguage.tr(
                                             en: 'Shopkeeper',
                                             hi: 'दुकानदार',
-                                            ne: 'पसल मालिक',
+                                            ne: 'विक्रेता',
                                           ),
                                           textAlign: TextAlign.center,
                                           maxLines: 1,
