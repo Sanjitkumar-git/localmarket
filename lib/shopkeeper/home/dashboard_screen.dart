@@ -8,7 +8,6 @@ import 'package:localmarket/widget/app_language.dart';
 import 'package:localmarket/widget/app_padding.dart';
 import 'package:localmarket/widget/app_radius.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:localmarket/services/location_service.dart';
 
 class DashboardScreen extends StatefulWidget {

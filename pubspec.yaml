@@ -13,8 +13,10 @@ dependencies:
   flutter:
     sdk: flutter
   font_awesome_flutter: ^11.0.0
+
+  geocoding: ^3.0.0
   geolocator: ^11.0.0  
-  geocoding: ^2.1.1
+  easy_localization: ^3.0.7
   google_sign_in: ^7.2.0
 
 dev_dependencies:
@@ -28,3 +30,10 @@ flutter:
   assets:
     - assets/shop/
     - assets/user/
+    - assets/translations/
+    - assets/translations/shop/ 
+
+
+
+
+

@@ -7,13 +7,9 @@ import 'package:localmarket/shopkeeper/auth/forgot_password.dart';
 import 'package:localmarket/shopkeeper/auth/shop_registration.dart';
 import 'package:localmarket/shopkeeper/auth/sign_up.dart';
 import 'package:localmarket/shopkeeper/home/bottom_nav.dart';
-import 'package:localmarket/shopkeeper/home/dashboard_screen.dart';
-
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
-import 'package:localmarket/widget/app_padding.dart';
-import 'package:localmarket/widget/app_radius.dart';
 import 'package:localmarket/widget/app_language.dart';
 
 class PartnerSignInPage extends StatefulWidget {

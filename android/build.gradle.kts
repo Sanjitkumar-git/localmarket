@@ -1,6 +1,7 @@
-plugins{
+plugins {
     id("com.google.gms.google-services") version "4.5.0" apply false
 }
+
 allprojects {
     repositories {
         google()
@@ -17,9 +18,17 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
-}
-subprojects {
-    project.evaluationDependsOn(":app")
+
+    if (project.name != "app") {
+        project.evaluationDependsOn(":app")
+    }
+
+    afterEvaluate {
+        if (project.hasProperty("android")) {
+            val android = project.property("android") as com.android.build.gradle.BaseExtension
+            android.compileSdkVersion(36)
+        }
+    }
 }
 
 tasks.register<Delete>("clean") {

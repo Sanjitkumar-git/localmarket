@@ -18,6 +18,7 @@ class AppTextField extends StatefulWidget {
   final FocusNode? nextFocusNode;
   final TextInputAction? textInputAction;
   final Color? prifixIconColor;
+  final Widget? suffixIcon;
 
   const AppTextField({
     super.key,
@@ -34,6 +35,7 @@ class AppTextField extends StatefulWidget {
     this.nextFocusNode,
     this.textInputAction,
     this.prifixIconColor,
+    this.suffixIcon,
   });
 
   @override
@@ -47,6 +49,25 @@ class _AppTextFieldState extends State<AppTextField> {
   void initState() {
     super.initState();
     _isObscured = widget.isPassword ? widget.initialObscure : false;
+  }
+
+  Widget? _getSuffixIcon() {
+    if (widget.isPassword) {
+      return IconButton(
+        onPressed: () {
+          setState(() {
+            _isObscured = !_isObscured;
+          });
+        },
+        icon: AppIcon(
+          icon: _isObscured ? Icons.visibility_off : Icons.visibility,
+          size: 32,
+          iconSize: 18,
+          iconColor: AppColors.primaryDark,
+        ),
+      );
+    }
+    return widget.suffixIcon;
   }
 
   @override
@@ -70,7 +91,6 @@ class _AppTextFieldState extends State<AppTextField> {
             widget.labelStyle ??
             TextStyle(
               color: AppColors.black,
-              fontWeight: AppFontWeights.bold,
               fontSize: AppTextSizes.md,
             ),
         floatingLabelStyle:
@@ -80,22 +100,7 @@ class _AppTextFieldState extends State<AppTextField> {
               fontWeight: AppFontWeights.bold,
             ),
         hintText: widget.hint,
-
-        suffixIcon: widget.isPassword
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isObscured = !_isObscured;
-                  });
-                },
-                icon: AppIcon(
-                  icon: _isObscured ? Icons.visibility_off : Icons.visibility,
-                  size: 32,
-                  iconSize: 18,
-                  iconColor: AppColors.primaryDark,
-                ),
-              )
-            : null,
+        suffixIcon: _getSuffixIcon(),
         filled: true,
         fillColor: AppColors.tertiary,
         contentPadding: const EdgeInsets.symmetric(

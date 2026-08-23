@@ -1,5 +1,5 @@
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 
 class LocationService {
   static Future<Position?> getCurrentPosition() async {
@@ -33,7 +33,7 @@ class LocationService {
     if (position == null) return null;
 
     try {
-      final places = await placemarkFromCoordinates(
+      final places = await geo.placemarkFromCoordinates(   // 👈 fix
         position.latitude,
         position.longitude,
       );
