@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
@@ -21,13 +22,23 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
     {'name': 'Nepali', 'nativeName': 'नेपाली', 'flag': '🇳🇵'},
   ];
 
-  void _continue() {
+  void _continue() async {
     AppLanguage.currentLanguage = _selectedLanguage;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => RoleSelectionPage()),
-    );
+    if (_selectedLanguage == 'Hindi') {
+      await context.setLocale(const Locale('hi'));
+    } else if (_selectedLanguage == 'Nepali') {
+      await context.setLocale(const Locale('ne'));
+    } else {
+      await context.setLocale(const Locale('en'));
+    }
+
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const RoleSelectionPage()),
+      );
+    }
   }
 
   @override

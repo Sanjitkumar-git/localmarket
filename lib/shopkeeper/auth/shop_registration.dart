@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:localmarket/shopkeeper/home/dashboard_screen.dart';
@@ -6,8 +7,6 @@ import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
 import 'package:localmarket/widget/app_language.dart';
-import 'package:localmarket/widget/app_padding.dart';
-import 'package:localmarket/widget/app_radius.dart';
 
 class ShopRegistrationPage extends StatefulWidget {
   final User user;
@@ -23,60 +22,25 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
   List<String> selectedCategories = [];
   bool _isLoading = false;
 
+  // Updated List with 'id' for Database and 'localeKey' for UI Translation
   final List<Map<String, String>> shopCategories = [
-    {
-      'en': 'Grocery & General Store',
-      'hi': 'किराना एवं जनरल स्टोर',
-      'ne': 'किराना तथा जनरल स्टोर',
-    },
-    {
-      'en': 'Fruits & Vegetables',
-      'hi': 'फल एवं सब्ज़ियाँ',
-      'ne': 'फलफूल तथा तरकारी',
-    },
-    {
-      'en': 'Dairy & Milk Products',
-      'hi': 'डेयरी एवं दूध उत्पाद',
-      'ne': 'डेरी तथा दूधजन्य पदार्थ',
-    },
-    {'en': 'Bakery & Sweets', 'hi': 'बेकरी एवं मिठाई', 'ne': 'बेकरी तथा मिठाई'},
-    {'en': 'Clothing & Fashion', 'hi': 'कपड़े एवं फैशन', 'ne': 'कपडा तथा फेसन'},
-    {'en': 'Footwear', 'hi': 'जूते-चप्पल', 'ne': 'जुत्ता-चप्पल'},
-    {
-      'en': 'Pharmacy & Medical',
-      'hi': 'दवा एवं मेडिकल',
-      'ne': 'औषधि तथा मेडिकल',
-    },
-    {'en': 'Electronics', 'hi': 'इलेक्ट्रॉनिक्स', 'ne': 'इलेक्ट्रोनिक्स'},
-    {
-      'en': 'Mobile & Accessories',
-      'hi': 'मोबाइल एवं एक्सेसरीज़',
-      'ne': 'मोबाइल तथा एक्सेसरिज',
-    },
-    {
-      'en': 'Hardware & Electrical',
-      'hi': 'हार्डवेयर एवं इलेक्ट्रिकल',
-      'ne': 'हार्डवेयर तथा विद्युतीय सामान',
-    },
-    {
-      'en': 'Stationery & Books',
-      'hi': 'स्टेशनरी एवं किताबें',
-      'ne': 'स्टेशनरी तथा किताबहरू',
-    },
-    {
-      'en': 'Cosmetics & Personal Care',
-      'hi': 'कॉस्मेटिक्स एवं पर्सनल केयर',
-      'ne': 'कस्मेटिक्स तथा व्यक्तिगत हेरचाह',
-    },
-    {
-      'en': 'Home & Kitchen',
-      'hi': 'घर एवं रसोई सामान',
-      'ne': 'घर तथा भान्सा सामान',
-    },
-    {'en': 'Meat & Fish', 'hi': 'मांस एवं मछली', 'ne': 'मासु तथा माछा'},
-    {'en': 'Toys & Gifts', 'hi': 'खिलौने एवं उपहार', 'ne': 'खेलौना तथा उपहार'},
-    {'en': 'Flowers & Plants', 'hi': 'फूल एवं पौधे', 'ne': 'फूल तथा बिरुवा'},
-    {'en': 'Other', 'hi': 'अन्य', 'ne': 'अन्य'},
+    {'id': 'grocery', 'localeKey': 'categories.grocery'},
+    {'id': 'fruits_veg', 'localeKey': 'categories.fruits_veg'},
+    {'id': 'dairy', 'localeKey': 'categories.dairy'},
+    {'id': 'bakery', 'localeKey': 'categories.bakery'},
+    {'id': 'clothing', 'localeKey': 'categories.clothing'},
+    {'id': 'footwear', 'localeKey': 'categories.footwear'},
+    {'id': 'pharmacy', 'localeKey': 'categories.pharmacy'},
+    {'id': 'electronics', 'localeKey': 'categories.electronics'},
+    {'id': 'mobile', 'localeKey': 'categories.mobile'},
+    {'id': 'hardware', 'localeKey': 'categories.hardware'},
+    {'id': 'stationery', 'localeKey': 'categories.stationery'},
+    {'id': 'cosmetics', 'localeKey': 'categories.cosmetics'},
+    {'id': 'home_kitchen', 'localeKey': 'categories.home_kitchen'},
+    {'id': 'meat_fish', 'localeKey': 'categories.meat_fish'},
+    {'id': 'toys_gifts', 'localeKey': 'categories.toys_gifts'},
+    {'id': 'flowers_plants', 'localeKey': 'categories.flowers_plants'},
+    {'id': 'other', 'localeKey': 'categories.other'},
   ];
 
   @override
@@ -85,17 +49,15 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
     super.dispose();
   }
 
-  String getCategoryName(String categoryEn) {
+  // Helper method to get translated category name from ID
+  String getCategoryName(String id) {
     final category = shopCategories.firstWhere(
-      (item) => item['en'] == categoryEn,
-      orElse: () => {'en': categoryEn, 'hi': categoryEn, 'ne': categoryEn},
+      (item) => item['id'] == id,
+      orElse: () => {'id': id, 'localeKey': ''},
     );
 
-    return AppLanguage.tr(
-      en: category['en']!,
-      hi: category['hi']!,
-      ne: category['ne']!,
-    );
+    if (category['localeKey']!.isEmpty) return id;
+    return category['localeKey']!.tr();
   }
 
   Future<void> _selectShopCategories() async {
@@ -135,9 +97,7 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () => Navigator.pop(context),
                             icon: Icon(
                               Icons.close,
                               color: AppColors.textPrimary,
@@ -167,14 +127,11 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                           itemCount: shopCategories.length,
                           itemBuilder: (context, index) {
                             final category = shopCategories[index];
-                            final String categoryEn = category['en']!;
-                            final String categoryName = AppLanguage.tr(
-                              en: category['en']!,
-                              hi: category['hi']!,
-                              ne: category['ne']!,
-                            );
+                            final String categoryId = category['id']!;
+                            final String categoryName = category['localeKey']!
+                                .tr();
                             final bool isSelected = tempSelected.contains(
-                              categoryEn,
+                              categoryId,
                             );
 
                             return CheckboxListTile(
@@ -193,11 +150,11 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                               onChanged: (value) {
                                 setModalState(() {
                                   if (value == true) {
-                                    if (!tempSelected.contains(categoryEn)) {
-                                      tempSelected.add(categoryEn);
+                                    if (!tempSelected.contains(categoryId)) {
+                                      tempSelected.add(categoryId);
                                     }
                                   } else {
-                                    tempSelected.remove(categoryEn);
+                                    tempSelected.remove(categoryId);
                                   }
                                 });
                               },
@@ -268,7 +225,6 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
   Future<void> _registerShop() async {
     FocusScope.of(context).unfocus();
 
-    // Validation
     if (storeNameController.text.trim().isEmpty) {
       _showMessage(
         AppLanguage.tr(
@@ -296,7 +252,6 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
     });
 
     try {
-      // Save shop details to Firestore
       await FirebaseFirestore.instance
           .collection('shopkeepers')
           .doc(widget.user.uid)
@@ -321,7 +276,6 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
         isError: false,
       );
 
-      // Navigate to Dashboard
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const DashboardScreen()),
@@ -411,7 +365,6 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                     ),
                     child: Column(
                       children: [
-                        // Display User Email
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
@@ -438,16 +391,11 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // Store Name
                         TextField(
                           controller: storeNameController,
                           style: TextStyle(color: AppColors.textPrimary),
                           decoration: InputDecoration(
-                            labelText: AppLanguage.tr(
-                              en: 'Store Name',
-                              hi: 'स्टोर नाम',
-                              ne: 'दुकानको नाम',
-                            ),
+                            labelText: 'signup.store_name'.tr(),
                             labelStyle: TextStyle(
                               color: AppColors.textSecondary,
                               fontSize: AppTextSizes.md,
@@ -478,17 +426,12 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        // Categories
                         InkWell(
                           borderRadius: BorderRadius.circular(12),
                           onTap: _selectShopCategories,
                           child: InputDecorator(
                             decoration: InputDecoration(
-                              labelText: AppLanguage.tr(
-                                en: 'Shop Categories',
-                                hi: 'दुकान की श्रेणियाँ',
-                                ne: 'पसलका वर्गहरू',
-                              ),
+                              labelText: 'signup.shop_categories'.tr(),
                               labelStyle: TextStyle(
                                 color: AppColors.textSecondary,
                                 fontSize: AppTextSizes.md,
@@ -523,11 +466,7 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                             ),
                             child: selectedCategories.isEmpty
                                 ? Text(
-                                    AppLanguage.tr(
-                                      en: 'Select Categories',
-                                      hi: 'श्रेणियाँ चुनें',
-                                      ne: 'वर्गहरू छान्नुहोस्',
-                                    ),
+                                    'signup.select_categories'.tr(),
                                     style: TextStyle(
                                       color: AppColors.textSecondary,
                                       fontSize: AppTextSizes.md,
@@ -537,11 +476,11 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                                     spacing: 6,
                                     runSpacing: 6,
                                     children: selectedCategories.map((
-                                      categoryEn,
+                                      categoryId,
                                     ) {
                                       return Chip(
                                         label: Text(
-                                          getCategoryName(categoryEn),
+                                          getCategoryName(categoryId),
                                           style: TextStyle(
                                             color: AppColors.textPrimary,
                                             fontSize: AppTextSizes.sm,
@@ -554,7 +493,7 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                                         onDeleted: () {
                                           setState(() {
                                             selectedCategories.remove(
-                                              categoryEn,
+                                              categoryId,
                                             );
                                           });
                                         },
@@ -564,7 +503,6 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                           ),
                         ),
                         const SizedBox(height: 26),
-                        // Register Button
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -592,11 +530,7 @@ class _ShopRegistrationPageState extends State<ShopRegistrationPage> {
                                       ),
                                     )
                                   : Text(
-                                      AppLanguage.tr(
-                                        en: 'Complete Setup',
-                                        hi: 'सेटअप पूरा करें',
-                                        ne: 'सेटअप पूरा गर्नुहोस्',
-                                      ),
+                                      'signup.register_store'.tr(),
                                       key: const ValueKey('register_text'),
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
