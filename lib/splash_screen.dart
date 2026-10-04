@@ -223,8 +223,8 @@ class _SplashScreenState extends State<SplashScreen>
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 500),
         reverseTransitionDuration: const Duration(milliseconds: 300),
-        pageBuilder: (_, __, ___) => const LanguageSelectionPage(),
-        transitionsBuilder: (_, animation, __, child) {
+        pageBuilder: (_, _, _) => const LanguageSelectionPage(),
+        transitionsBuilder: (_, animation, _, child) {
           final curved = CurvedAnimation(
             parent: animation,
             curve: Curves.easeOutCubic,
@@ -536,7 +536,7 @@ class _LogoMark extends StatelessWidget {
           if (animatePulse)
             AnimatedBuilder(
               animation: pulse,
-              builder: (_, __) {
+              builder: (_, _) {
                 final t = pulse.value;
                 return Stack(
                   alignment: Alignment.center,
@@ -759,7 +759,7 @@ class _ProgressBar extends StatelessWidget {
             ),
             AnimatedBuilder(
               animation: value,
-              builder: (_, __) => FractionallySizedBox(
+              builder: (_, _) => FractionallySizedBox(
                 alignment: Alignment.centerLeft,
                 widthFactor: value.value.clamp(0.02, 1.0),
                 child: Container(

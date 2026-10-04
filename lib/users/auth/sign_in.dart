@@ -1,12 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localmarket/widget/app_background.dart';
 import 'package:localmarket/widget/app_button.dart';
 import 'package:localmarket/widget/app_colors.dart';
-import 'package:localmarket/widget/app_font.dart';
-import 'package:localmarket/widget/app_fontweight.dart';
-import 'package:localmarket/widget/app_icon.dart';
 import 'package:localmarket/widget/app_textfield.dart';
 
 class SignInPage extends StatefulWidget {

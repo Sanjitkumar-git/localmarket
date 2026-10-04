@@ -1,69 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:localmarket/shopkeeper/home/controller/shop_bottom_nav_controller.dart';
 import 'package:localmarket/shopkeeper/home/dashboard_screen.dart';
+
 import 'package:localmarket/widget/app_colors.dart';
+
 import 'package:localmarket/widget/app_language.dart';
 
-class shopkeeperbottomApp extends StatelessWidget {
-  const shopkeeperbottomApp({super.key});
+class ShopkeeperBottomView extends GetView<ShopkeeperBottomController> {
+  const ShopkeeperBottomView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: shopkeeperbottom());
-  }
-}
+    final List<Widget> pages = [
+      const DashboardView(),
 
-class shopkeeperbottom extends StatefulWidget {
-  const shopkeeperbottom({super.key});
+      const Center(
+        child: Text(
+          'Messages',
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+      ),
 
-  @override
-  State<shopkeeperbottom> createState() => _shopkeeperbottomState();
-}
+      const Center(
+        child: Text(
+          'Profile',
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        ),
+      ),
+    ];
 
-class _shopkeeperbottomState extends State<shopkeeperbottom> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-  );
-
-  static const List<Widget> _widgetOptions = <Widget>[
-    DashboardScreen(),
-    Center(child: Text('Messages', style: optionStyle)),
-    Center(child: Text('Profile', style: optionStyle)),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: AppLanguage.tr(en: 'Home', hi: 'होम', ne: 'होम'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message_outlined),
-            label: AppLanguage.tr(en: 'Messages', hi: 'संदेश', ne: 'सन्देशहरू'),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
-            label: AppLanguage.tr(
-              en: 'Profile',
-              hi: 'प्रोफ़ाइल',
-              ne: 'प्रोफाइल',
+      body: Obx(
+        () => IndexedStack(
+          index: controller.selectedIndex.value,
+          children: pages,
+        ),
+      ),
+
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          currentIndex: controller.selectedIndex.value,
+
+          selectedItemColor: AppColors.primary,
+
+          unselectedItemColor: AppColors.textSecondary,
+
+          type: BottomNavigationBarType.fixed,
+
+          onTap: controller.changeTab,
+
+          items: [
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home_outlined),
+              activeIcon: const Icon(Icons.home),
+              label: AppLanguage.tr(en: 'Home', hi: 'होम', ne: 'होम'),
             ),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppColors.primary,
-        onTap: _onItemTapped,
+
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.message_outlined),
+              activeIcon: const Icon(Icons.message),
+              label: AppLanguage.tr(
+                en: 'Messages',
+                hi: 'संदेश',
+                ne: 'सन्देशहरू',
+              ),
+            ),
+
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.person_outline),
+              activeIcon: const Icon(Icons.person),
+              label: AppLanguage.tr(
+                en: 'Profile',
+                hi: 'प्रोफ़ाइल',
+                ne: 'प्रोफाइल',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
