@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:localmarket/shopkeeper/home/controller/dashboard_controller.dart';
+import 'package:localmarket/shopkeeper/routes/app_routes.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
 import 'package:localmarket/widget/app_language.dart';
 import 'package:localmarket/widget/app_padding.dart';
 import 'package:localmarket/widget/app_radius.dart';
-import 'package:localmarket/widget/app_routes.dart';
 
 class DashboardView extends GetView<DashboardController> {
   const DashboardView({super.key});

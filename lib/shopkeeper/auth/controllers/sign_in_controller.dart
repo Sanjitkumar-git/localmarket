@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:localmarket/shopkeeper/routes/app_routes.dart';
 
 import 'package:localmarket/widget/app_language.dart';
-import 'package:localmarket/widget/app_routes.dart';
 
 class PartnerSigninController extends GetxController {
   // ============================================================

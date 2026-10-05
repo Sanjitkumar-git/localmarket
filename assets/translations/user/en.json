@@ -24,14 +24,23 @@
     "login_to_account": "Login to your account",
     "email_or_phone": "Email or Phone Number",
     "password": "Password",
+    "confirm_Password": "Confirm Password",
     "forgot_password": "Forgot Password?",
+    "forgot_password_desc": "Enter your email and we'll send you a link to reset your password.",
     "login": "Login",
     "or_continue_with": "or continue with",
     "continue_google": "Continue with Google",
     "continue_phone": "Continue with Phone",
     "new_here": "New to NearShop?",
     "create_account_desc": "Create your account and start exploring local shops.",
-    "create_account": "Create Account"
+    "create_account": "Create Account",
+    "remember_password": "Remember Password",
+    "resent_link": "Resent link",
+    "send_reset_link": "Send Reset Link",
+    "back_to_login": "Back to Login",
+    "reset_link_sent": "Reset link sent. Please check your email.",
+    "already_have_account": "Alredy have an account?",
+    "dont_have_account": "Don't have an account?"
   },
   "signup": {
     "join": "Join NearShop",
@@ -86,7 +95,10 @@
     "invalid_phone": "Please enter a valid phone number.",
     "password_required": "Password is required.",
     "password_min_length": "Password must be at least 8 characters.",
-    "password_mismatch": "Passwords do not match."
+    "password_mismatch": "Passwords do not match.",
+    "invalid_name": "Enter a valid full name (e.g., John Doe)",
+    "password_weak": "Use 8 or more characters with letters, numbers and symbols",
+    "invalid_number": "Please enter a valid number"
   },
   "errors": {
     "something_went_wrong": "Something went wrong. Please try again.",

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:localmarket/shopkeeper/auth/sign_in.dart';
-import 'package:localmarket/users/auth/sign_in.dart';
+import 'package:localmarket/users/auth/view/sign_in_screen.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
@@ -152,7 +152,7 @@ class RoleSelectionPage extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) => SignInPage(),
+                                        builder: (_) => SignInScreen(),
                                       ),
                                     );
                                   },

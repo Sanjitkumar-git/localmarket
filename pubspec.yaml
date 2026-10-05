@@ -21,6 +21,7 @@ dependencies:
 
   get: ^4.7.3
   image_picker: ^1.2.3
+  formz: ^0.8.1
 
 dev_dependencies:
   flutter_test:
@@ -33,7 +34,7 @@ flutter:
   assets:
     - assets/shop/
     - assets/user/
-    - assets/translations/
+    - assets/translations/user/ 
     - assets/translations/shop/ 
 
 

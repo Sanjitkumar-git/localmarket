@@ -3,8 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localmarket/firebase_options.dart';
+import 'package:localmarket/shopkeeper/routes/shop_routes.dart' as shop;
 import 'package:localmarket/splash_screen.dart';
-import 'package:localmarket/widget/app_pages.dart';
+import 'package:localmarket/users/routes/app_routes.dart' as user;
+import 'package:localmarket/users/routes/root_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +18,7 @@ Future<void> main() async {
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('hi'), Locale('ne')],
-      path: 'assets/translations',
+      path: 'assets/translations/user',
       fallbackLocale: const Locale('en'),
       startLocale: const Locale('en'),
       child: const MainApp(),
@@ -31,7 +33,11 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      getPages: AppPages.routes,
+      getPages: [
+         ...RootPages.routes,
+        ...user.UserPages.routes,
+        ...shop.ShopkeeperPages.routes,
+      ],
 
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,

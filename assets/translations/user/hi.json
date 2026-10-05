@@ -25,13 +25,21 @@
     "email_or_phone": "ईमेल या फोन नंबर",
     "password": "पासवर्ड",
     "forgot_password": "पासवर्ड भूल गए?",
+    "confirm_Password": "पासवर्ड की पुष्टि करें",
     "login": "लॉगिन",
     "or_continue_with": "या इसके साथ जारी रखें",
     "continue_google": "Google के साथ जारी रखें",
     "continue_phone": "फोन के साथ जारी रखें",
     "new_here": "नियरशॉप पर नए हैं?",
     "create_account_desc": "अपना खाता बनाएं और नजदीकी दुकानों को देखना शुरू करें।",
-    "create_account": "खाता बनाएं"
+    "create_account": "खाता बनाएं",
+    "already_have_account": "पहले से खाता है?",
+    "remember_password": "पासवर्ड याद रखें",
+    "dont_have_account": "क्या आपका खाता नहीं है?",
+    "forgot_password_desc": "अपना ईमेल दर्ज करें, हम पासवर्ड रीसेट करने का लिंक भेजेंगे।",
+    "send_reset_link": "रीसेट लिंक भेजें",
+    "back_to_login": "लॉगिन पर वापस जाएं",
+    "reset_link_sent": "रीसेट लिंक भेज दिया गया है। कृपया अपना ईमेल जांचें।"
   },
   "signup": {
     "join": "नियरशॉप से जुड़ें",
@@ -86,7 +94,10 @@
     "invalid_phone": "कृपया सही फोन नंबर दर्ज करें।",
     "password_required": "पासवर्ड अनिवार्य है।",
     "password_min_length": "पासवर्ड कम से कम 8 अक्षरों का होना चाहिए।",
-    "password_mismatch": "पासवर्ड मेल नहीं खाता।"
+    "password_mismatch": "पासवर्ड मेल नहीं खाता।",
+    "invalid_name": "कृपया सही पूरा नाम दर्ज करें (जैसे: राम शर्मा)",
+    "password_weak": "8 या अधिक अक्षरों का उपयोग करें, जिनमें अक्षर, अंक और चिह्न हों",
+    "invalid_number": "कृपया सही संख्या दर्ज करें"
   },
   "errors": {
     "something_went_wrong": "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
