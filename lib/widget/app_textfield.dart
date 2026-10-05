@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:localmarket/users/utils/form_inputs.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
@@ -12,6 +14,8 @@ class AppTextField extends StatefulWidget {
   final TextStyle? floatingLabelStyle;
   final bool isPassword;
   final bool initialObscure;
+  final FaIconData? prifixIcon;
+  final ValidationError? validationError;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
@@ -23,6 +27,7 @@ class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,
     required this.controller,
+    this.prifixIcon,
     required this.label,
     required this.hint,
     this.labelStyle,
@@ -36,6 +41,7 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.prifixIconColor,
     this.suffixIcon,
+    this.validationError,
   });
 
   @override
@@ -62,7 +68,7 @@ class _AppTextFieldState extends State<AppTextField> {
         icon: AppIcon(
           icon: _isObscured ? Icons.visibility_off : Icons.visibility,
           size: 32,
-          iconSize: 18,
+          iconSize: 17,
           iconColor: AppColors.primaryDark,
         ),
       );
@@ -78,7 +84,9 @@ class _AppTextFieldState extends State<AppTextField> {
       textInputAction: widget.textInputAction,
       obscureText: _isObscured,
       keyboardType: widget.keyboardType,
+
       validator: widget.validator,
+
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
         if (widget.nextFocusNode != null) {
@@ -89,10 +97,7 @@ class _AppTextFieldState extends State<AppTextField> {
         labelText: widget.label,
         labelStyle:
             widget.labelStyle ??
-            TextStyle(
-              color: AppColors.black,
-              fontSize: AppTextSizes.md,
-            ),
+            TextStyle(color: AppColors.black, fontSize: AppTextSizes.md),
         floatingLabelStyle:
             widget.floatingLabelStyle ??
             const TextStyle(
@@ -100,7 +105,19 @@ class _AppTextFieldState extends State<AppTextField> {
               fontWeight: AppFontWeights.bold,
             ),
         hintText: widget.hint,
+        errorText: widget.validationError?.errorText,
         suffixIcon: _getSuffixIcon(),
+        prefixIcon: widget.prifixIcon == null
+            ? null
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: FaIcon(
+                  widget.prifixIcon,
+                  size: 18,
+                  color: AppColors.primaryDark,
+                ),
+              ),
+        prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
         filled: true,
         fillColor: AppColors.tertiary,
         contentPadding: const EdgeInsets.symmetric(

@@ -1,0 +1,39 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "bazarlive-fee1a",
+          "appId": "1:453576031191:android:4e1dfd493c5d2dd39f2992",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "bazarlive-fee1a",
+          "configurations": {
+            "android": "1:453576031191:android:4e1dfd493c5d2dd39f2992",
+            "ios": "1:453576031191:ios:82c05ec79ca9c12e9f2992",
+            "macos": "1:453576031191:ios:82c05ec79ca9c12e9f2992",
+            "web": "1:453576031191:web:209efe2fe729476d9f2992",
+            "windows": "1:453576031191:web:6a31daebb0a5649b9f2992"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

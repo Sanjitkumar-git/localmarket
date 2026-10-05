@@ -1,26 +1,123 @@
 {
   "project_info": {
-    "project_number": "251612080137",
-    "project_id": "nearshopshopkeeper",
-    "storage_bucket": "nearshopshopkeeper.firebasestorage.app"
+    "project_number": "453576031191",
+    "project_id": "bazarlive-fee1a",
+    "storage_bucket": "bazarlive-fee1a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:251612080137:android:4ff400bac7d0261b33f0d8",
+        "mobilesdk_app_id": "1:453576031191:android:8e6a10dcdb3da1739f2992",
         "android_client_info": {
-          "package_name": "com.example.localmarket"
+          "package_name": "com.example.bazarlive"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "453576031191-8k1o8f0floqdnp3e6jhpn8jhvs3sh2nh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyA4gLWL7BXEcYjwfWqkpufyDtLp0BZ1ddI"
+          "current_key": "AIzaSyCXSe0_YPOgK_rWvXvAExnteM7o2bMfU60"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453576031191-8k1o8f0floqdnp3e6jhpn8jhvs3sh2nh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "453576031191-e74vh5skq07vnmtjpr5kb5rvrfaplmhs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bazarlive"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453576031191:android:ee8f425951e166c39f2992",
+        "android_client_info": {
+          "package_name": "com.example.bazarlive_partner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453576031191-hpb1o2n862pq19utvfgsa4nm9a859lnf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bazarlive_partner",
+            "certificate_hash": "13c01830e8dd90c620c4532d54ecd2d4d11ed2ec"
+          }
+        },
+        {
+          "client_id": "453576031191-8k1o8f0floqdnp3e6jhpn8jhvs3sh2nh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXSe0_YPOgK_rWvXvAExnteM7o2bMfU60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453576031191-8k1o8f0floqdnp3e6jhpn8jhvs3sh2nh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "453576031191-e74vh5skq07vnmtjpr5kb5rvrfaplmhs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bazarlive"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453576031191:android:4e1dfd493c5d2dd39f2992",
+        "android_client_info": {
+          "package_name": "com.example.localmarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453576031191-8k1o8f0floqdnp3e6jhpn8jhvs3sh2nh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXSe0_YPOgK_rWvXvAExnteM7o2bMfU60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453576031191-8k1o8f0floqdnp3e6jhpn8jhvs3sh2nh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "453576031191-e74vh5skq07vnmtjpr5kb5rvrfaplmhs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bazarlive"
+              }
+            }
+          ]
         }
       }
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:localmarket/widget/app_colors.dart';
 import 'package:localmarket/widget/app_font.dart';
 import 'package:localmarket/widget/app_fontweight.dart';
@@ -14,11 +15,11 @@ class MerchantAuthShell extends StatelessWidget {
   final double overlapHeight;
 
   /// Top-left badge ko icon + text (jasto "Merchant Portal")
-  final IconData badgeIcon;
+  final FaIconData badgeIcon;
   final String badgeText;
 
   /// Card bhitra ko top icon (circle ma)
-  final IconData cardIcon;
+  final FaIconData cardIcon;
 
   /// Card ko title ra subtitle
   final String title;
@@ -86,7 +87,7 @@ class MerchantAuthShell extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(badgeIcon, color: Colors.white, size: 20),
+                        FaIcon(badgeIcon, color: Colors.white, size: 20),
                         const SizedBox(width: 7),
                         Text(
                           badgeText,
@@ -135,7 +136,7 @@ class MerchantAuthShell extends StatelessWidget {
                     color: AppColors.primary.withOpacity(0.12),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(cardIcon, color: AppColors.primary, size: 38),
+                  child: Center(child: FaIcon(cardIcon, color: AppColors.primary, size: 38)),
                 ),
 
                 const SizedBox(height: 14),

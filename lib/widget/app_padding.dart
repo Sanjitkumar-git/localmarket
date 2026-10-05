@@ -58,4 +58,6 @@ class AppPadding {
   static const EdgeInsets cardCompact = EdgeInsets.all(12);
 
   static const EdgeInsets cardLarge = EdgeInsets.all(24);
+
+  static EdgeInsetsGeometry? get allMd => null;
 }
