@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localmarket/widget/validation_controller.dart';
 
 class ForgotPasswordController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -43,11 +44,7 @@ class ForgotPasswordController extends GetxController {
     try {
       await _auth.sendPasswordResetEmail(email: emailController.text.trim());
 
-      Get.snackbar(
-        'Success',
-        'Password reset link has been sent to your email.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.success('Password reset link has been sent to your email.');
 
       return true;
     } on FirebaseAuthException catch (e) {
@@ -59,15 +56,11 @@ class ForgotPasswordController extends GetxController {
         message = 'Please enter a valid email address.';
       }
 
-      Get.snackbar('Error', message, snackPosition: SnackPosition.BOTTOM);
+      AppSnackbar.error(message);
 
       return false;
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Something went wrong. Please try again.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.error('Something went wrong. Please try again.');
 
       return false;
     } finally {

@@ -8,7 +8,16 @@ class ProductModel {
   final String description;
   final double price;
   final String category;
-  final int stock;
+
+  final double stockQuantity;
+  final String stockUnit;
+
+  final bool hasOffer;
+  final double? offerPrice;
+  final double? discountPercent;
+  final DateTime? offerStartDate;
+  final DateTime? offerEndDate;
+
   final bool isActive;
 
   ProductModel({
@@ -19,7 +28,16 @@ class ProductModel {
     required this.description,
     required this.price,
     required this.category,
-    required this.stock,
+
+    required this.stockQuantity,
+    required this.stockUnit,
+
+    required this.hasOffer,
+    required this.offerPrice,
+    required this.discountPercent,
+    required this.offerStartDate,
+    required this.offerEndDate,
+
     required this.isActive,
   });
 
@@ -32,8 +50,25 @@ class ProductModel {
       'description': description,
       'price': price,
       'category': category,
-      'stock': stock,
+
+      // Stock
+      'stockQuantity': stockQuantity,
+      'stockUnit': stockUnit,
+
+      // Offer
+      'hasOffer': hasOffer,
+      'offerPrice': offerPrice,
+      'discountPercent': discountPercent,
+      'offerStartDate': offerStartDate != null
+          ? Timestamp.fromDate(offerStartDate!)
+          : null,
+      'offerEndDate': offerEndDate != null
+          ? Timestamp.fromDate(offerEndDate!)
+          : null,
+
+      // Status
       'isActive': isActive,
+
       'createdAt': FieldValue.serverTimestamp(),
     };
   }
@@ -45,10 +80,49 @@ class ProductModel {
       shopName: map['shopName'] ?? '',
       name: map['name'] ?? '',
       description: map['description'] ?? '',
+
       price: (map['price'] ?? 0).toDouble(),
+
       category: map['category'] ?? '',
-      stock: map['stock'] ?? 0,
+
+      // Stock
+      stockQuantity: (map['stockQuantity'] ?? 0).toDouble(),
+
+      stockUnit: map['stockUnit'] ?? 'pcs',
+
+      // Offer
+      hasOffer: map['hasOffer'] ?? false,
+
+      offerPrice: map['offerPrice'] != null
+          ? (map['offerPrice']).toDouble()
+          : null,
+
+      discountPercent: map['discountPercent'] != null
+          ? (map['discountPercent']).toDouble()
+          : null,
+
+      offerStartDate: _timestampToDate(map['offerStartDate']),
+
+      offerEndDate: _timestampToDate(map['offerEndDate']),
+
+      // Status
       isActive: map['isActive'] ?? true,
     );
+  }
+
+  static DateTime? _timestampToDate(dynamic value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value is Timestamp) {
+      return value.toDate();
+    }
+
+    if (value is DateTime) {
+      return value;
+    }
+
+    return null;
   }
 }

@@ -6,4 +6,8 @@ abstract class AppRoutes {
   static const String shopRegistration = '/shop-registration';
   static const String shopkeeperbottom = '/shopkeeperbottom';
   static const String addProduct = '/add-product';
+  static const String viewProduct = '/view-product';
+  static const String offerProduct = '/offer-product';
+
+  static const String profile = '/profile';
 }

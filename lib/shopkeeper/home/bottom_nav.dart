@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localmarket/shopkeeper/home/controller/shop_bottom_nav_controller.dart';
 import 'package:localmarket/shopkeeper/home/dashboard_screen.dart';
+import 'package:localmarket/shopkeeper/profile/view/profile_view.dart';
 
 import 'package:localmarket/widget/app_colors.dart';
 
@@ -22,12 +23,7 @@ class ShopkeeperBottomView extends GetView<ShopkeeperBottomController> {
         ),
       ),
 
-      const Center(
-        child: Text(
-          'Profile',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-        ),
-      ),
+      const ProfileView(),
     ];
 
     return Scaffold(

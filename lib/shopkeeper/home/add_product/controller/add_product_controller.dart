@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:localmarket/shopkeeper/home/add_product/model/add_product_model.dart';
+import 'package:localmarket/widget/validation_controller.dart';
 
 class AddProductController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,17 +18,28 @@ class AddProductController extends GetxController {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController stockController = TextEditingController();
 
-  // Selected category for current product
+  final RxString selectedStockUnit = ''.obs;
+
+  final List<String> stockUnits = [
+    'pcs',
+    'kg',
+    'g',
+    'liter',
+    'ml',
+    'pack',
+    'box',
+    'bottle',
+    'dozen',
+  ];
+
   final RxString selectedCategory = ''.obs;
 
-  // Loading states
   final RxBool isLoading = false.obs;
   final RxBool isLoadingCategories = true.obs;
   final Rxn<XFile> selectedImage = Rxn<XFile>();
 
   final ImagePicker _imagePicker = ImagePicker();
 
-  // Categories selected by this shopkeeper during registration
   final RxList<String> shopCategories = <String>[].obs;
 
   @override
@@ -44,11 +56,7 @@ class AddProductController extends GetxController {
       final User? user = _auth.currentUser;
 
       if (user == null) {
-        Get.snackbar(
-          'Error',
-          'User is not logged in.',
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        AppSnackbar.error('User is not logged in.');
         return;
       }
 
@@ -58,11 +66,7 @@ class AddProductController extends GetxController {
           .get();
 
       if (!shopDoc.exists) {
-        Get.snackbar(
-          'Error',
-          'Shop information not found.',
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        AppSnackbar.error('Shop information not found.');
         return;
       }
 
@@ -84,18 +88,10 @@ class AddProductController extends GetxController {
       }
 
       if (shopCategories.isEmpty) {
-        Get.snackbar(
-          'Category Not Found',
-          'No shop categories have been selected.',
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        AppSnackbar.error('No shop categories have been selected.');
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to load your shop categories.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.error('Failed to load your shop categories.');
     } finally {
       isLoadingCategories.value = false;
     }
@@ -114,20 +110,13 @@ class AddProductController extends GetxController {
         selectedImage.value = image;
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Unable to select image.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.error('Unable to select image.');
     }
   }
 
   void removeProductImage() {
     selectedImage.value = null;
   }
-  // ============================================================
-  // ADD PRODUCT
-  // ============================================================
 
   Future<void> addProduct() async {
     if (!formKey.currentState!.validate()) {
@@ -135,31 +124,19 @@ class AddProductController extends GetxController {
     }
 
     if (selectedCategory.value.isEmpty) {
-      Get.snackbar(
-        'Category Required',
-        'Please select a product category.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.error('Please select a product category.');
       return;
     }
 
     final User? user = _auth.currentUser;
 
     if (user == null) {
-      Get.snackbar(
-        'Error',
-        'User is not logged in.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.error('User is not logged in.');
       return;
     }
 
     try {
       isLoading.value = true;
-
-      // ========================================================
-      // GET SHOPKEEPER INFORMATION
-      // ========================================================
 
       final shopDoc = await _firestore
           .collection('shopkeepers')
@@ -167,11 +144,7 @@ class AddProductController extends GetxController {
           .get();
 
       if (!shopDoc.exists) {
-        Get.snackbar(
-          'Error',
-          'Shop information not found.',
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        AppSnackbar.error('Shop information not found.');
         return;
       }
 
@@ -179,15 +152,7 @@ class AddProductController extends GetxController {
 
       final String shopName = shopData['storeName'] ?? 'My Store';
 
-      // ========================================================
-      // CREATE PRODUCT ID
-      // ========================================================
-
       final String productId = _firestore.collection('products').doc().id;
-
-      // ========================================================
-      // CREATE PRODUCT
-      // ========================================================
 
       final ProductModel product = ProductModel(
         productId: productId,
@@ -197,61 +162,48 @@ class AddProductController extends GetxController {
         description: descriptionController.text.trim(),
         price: double.parse(priceController.text.trim()),
         category: selectedCategory.value,
-        stock: int.parse(stockController.text.trim()),
+        stockQuantity: double.parse(stockController.text.trim()),
+        stockUnit: selectedStockUnit.value,
+
+        hasOffer: false,
+        offerPrice: null,
+        discountPercent: null,
+        offerStartDate: null,
+        offerEndDate: null,
         isActive: true,
       );
 
-      // ========================================================
-      // SAVE PRODUCT
-      // ========================================================
+      if (selectedStockUnit.value.isEmpty) {
+        AppSnackbar.error('Please select stock unit.');
+        return;
+      }
 
       await _firestore
           .collection('products')
           .doc(productId)
           .set(product.toMap());
 
-      Get.snackbar(
-        'Success',
-        'Product added successfully.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.success('Product added successfully.');
 
       clearFields();
-
-      Get.back();
     } on FirebaseException catch (e) {
-      Get.snackbar(
-        'Error',
-        e.message ?? 'Failed to add product.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.error(e.message ?? 'Failed to add product.');
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Something went wrong.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      AppSnackbar.error('Something went wrong.');
     } finally {
       isLoading.value = false;
     }
   }
-
-  // ============================================================
-  // CLEAR FIELDS
-  // ============================================================
 
   void clearFields() {
     nameController.clear();
     descriptionController.clear();
     priceController.clear();
     stockController.clear();
+    selectedStockUnit.value = '';
 
     selectedCategory.value = '';
   }
-
-  // ============================================================
-  // DISPOSE
-  // ============================================================
 
   @override
   void onClose() {
