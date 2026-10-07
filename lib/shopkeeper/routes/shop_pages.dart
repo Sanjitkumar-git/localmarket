@@ -9,9 +9,9 @@ import 'package:localmarket/shopkeeper/auth/view/forgot_password_view.dart';
 import 'package:localmarket/shopkeeper/auth/view/shop_registration_view.dart';
 import 'package:localmarket/shopkeeper/home/add_product/bindings/add_product_bindings.dart';
 import 'package:localmarket/shopkeeper/home/add_product/view/add_product_view.dart';
-import 'package:localmarket/shopkeeper/home/binding/shop_bottom_nav_bindings.dart';
-import 'package:localmarket/shopkeeper/home/binding/shop_keeper_home_bindings.dart';
-import 'package:localmarket/shopkeeper/home/bottom_nav.dart';
+import 'package:localmarket/common/common_bottom_navigation_bindings.dart';
+import 'package:localmarket/shopkeeper/home/binding/shop_keeper_module_nav.dart';
+import 'package:localmarket/common/common_bottom_nav.dart';
 import 'package:localmarket/shopkeeper/home/offer_product/bindings/offer_product_bindings.dart';
 import 'package:localmarket/shopkeeper/home/offer_product/view/offer_product_view.dart';
 import 'package:localmarket/shopkeeper/home/view_product/bindings/view_product_bindings.dart';
@@ -43,7 +43,7 @@ final routes = [
   ),
   GetPage(
     name: AppRoutes.shopkeeperbottom,
-    page: () => const ShopkeeperBottomView(),
+    page: () => const CommonBottomNavView(),
     binding: ShopkeeperHomeBinding(),
   ),
   GetPage(

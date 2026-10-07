@@ -20,14 +20,8 @@ class UserPages {
       page: () => const SignUpScreen(),
       binding: UserSignUpBinding(),
     ),
-    GetPage(
-      name: _Paths.HOME,
-      page: () => const HomeScreen(),
-    ),
-    GetPage(
-      name: _Paths.FORGOTPAGE,
-      page: () => const ForgotScreen(),
-    ),
+    GetPage(name: _Paths.HOME, page: () => const HomeScreen()),
+    GetPage(name: _Paths.FORGOTPAGE, page: () => const ForgotScreen()),
   ];
 }
 
