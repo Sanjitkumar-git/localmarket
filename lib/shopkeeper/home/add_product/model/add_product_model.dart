@@ -19,6 +19,7 @@ class ProductModel {
   final DateTime? offerEndDate;
 
   final bool isActive;
+  final String imageUrl;
 
   ProductModel({
     required this.productId,
@@ -39,6 +40,7 @@ class ProductModel {
     required this.offerEndDate,
 
     required this.isActive,
+    required this.imageUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -70,6 +72,7 @@ class ProductModel {
       'isActive': isActive,
 
       'createdAt': FieldValue.serverTimestamp(),
+      'imageUrl': imageUrl,
     };
   }
 
@@ -107,6 +110,8 @@ class ProductModel {
 
       // Status
       isActive: map['isActive'] ?? true,
+
+      imageUrl: map['imageUrl'] ?? '',
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:localmarket/common/storage_services.dart';
 
 import 'package:localmarket/shopkeeper/home/add_product/model/add_product_model.dart';
 import 'package:localmarket/widget/validation_controller.dart';
@@ -17,6 +18,8 @@ class AddProductController extends GetxController {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController stockController = TextEditingController();
+
+  final RxBool isUploadingImage = false.obs;
 
   final RxString selectedStockUnit = ''.obs;
 
@@ -128,6 +131,11 @@ class AddProductController extends GetxController {
       return;
     }
 
+    if (selectedStockUnit.value.isEmpty) {
+      AppSnackbar.error('Please select stock unit.');
+      return;
+    }
+
     final User? user = _auth.currentUser;
 
     if (user == null) {
@@ -148,9 +156,29 @@ class AddProductController extends GetxController {
         return;
       }
 
-      final shopData = shopDoc.data()!;
+      final Map<String, dynamic> shopData = shopDoc.data() ?? {};
 
       final String shopName = shopData['storeName'] ?? 'My Store';
+
+      String imageUrl = '';
+
+      if (selectedImage.value != null) {
+        isUploadingImage.value = true;
+
+        final String? uploadedUrl = await CloudinaryService.uploadImage(
+          image: selectedImage.value!,
+          folder: 'nearshop/products',
+        );
+
+        isUploadingImage.value = false;
+
+        if (uploadedUrl == null || uploadedUrl.isEmpty) {
+          AppSnackbar.error('Unable to upload product image.');
+          return;
+        }
+
+        imageUrl = uploadedUrl;
+      }
 
       final String productId = _firestore.collection('products').doc().id;
 
@@ -164,7 +192,7 @@ class AddProductController extends GetxController {
         category: selectedCategory.value,
         stockQuantity: double.parse(stockController.text.trim()),
         stockUnit: selectedStockUnit.value,
-
+        imageUrl: imageUrl,
         hasOffer: false,
         offerPrice: null,
         discountPercent: null,
@@ -172,11 +200,6 @@ class AddProductController extends GetxController {
         offerEndDate: null,
         isActive: true,
       );
-
-      if (selectedStockUnit.value.isEmpty) {
-        AppSnackbar.error('Please select stock unit.');
-        return;
-      }
 
       await _firestore
           .collection('products')
@@ -191,6 +214,7 @@ class AddProductController extends GetxController {
     } catch (e) {
       AppSnackbar.error('Something went wrong.');
     } finally {
+      isUploadingImage.value = false;
       isLoading.value = false;
     }
   }
@@ -200,9 +224,10 @@ class AddProductController extends GetxController {
     descriptionController.clear();
     priceController.clear();
     stockController.clear();
-    selectedStockUnit.value = '';
 
+    selectedStockUnit.value = '';
     selectedCategory.value = '';
+    selectedImage.value = null;
   }
 
   @override

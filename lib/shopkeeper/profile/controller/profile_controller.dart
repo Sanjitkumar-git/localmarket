@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:localmarket/common/storage_services.dart';
 import 'package:localmarket/shopkeeper/profile/model/profile_model.dart';
 import 'package:localmarket/shopkeeper/routes/app_routes.dart';
 import 'package:localmarket/widget/validation_controller.dart';
@@ -90,6 +91,16 @@ class ProfileController extends GetxController {
         return;
       }
 
+      if (selectedImage.value != null) {
+        final String? uploadedUrl = await uploadShopImage(selectedImage.value!);
+
+        if (uploadedUrl == null || uploadedUrl.isEmpty) {
+          return;
+        }
+
+        shopImageUrl.value = uploadedUrl;
+      }
+
       await _firestore.collection('shopkeepers').doc(user.uid).update({
         'ownerName': ownerName.value.trim(),
         'storeName': shopName.value.trim(),
@@ -101,6 +112,8 @@ class ProfileController extends GetxController {
         'longitude': longitude.value,
         'updatedAt': FieldValue.serverTimestamp(),
       });
+
+      selectedImage.value = null;
 
       AppSnackbar.success('Profile updated successfully.');
     } on FirebaseException catch (e) {
@@ -129,67 +142,22 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> updateProfileimage() async {
-    try {
-      isSaving.value = true;
-
-      final User? user = _auth.currentUser;
-
-      if (user == null) {
-        AppSnackbar.error('User is not logged in.');
-        return;
-      }
-
-      //       if (selectedImage.value != null) {
-      //         final String? uploadedUrl = await uploadShopImage(selectedImage.value!);
-      // // after add cloudnary storage
-      //         // if (uploadedUrl != null && uploadedUrl.isNotEmpty) {
-      //         //   shopImageUrl.value = uploadedUrl;
-      //         // }
-      //       }
-
-      if (selectedImage.value != null) {
-        final String? uploadedUrl = await uploadShopImage(selectedImage.value!);
-
-        if (uploadedUrl == null || uploadedUrl.isEmpty) {
-          return;
-        }
-
-        shopImageUrl.value = uploadedUrl;
-      }
-      await _firestore.collection('shopkeepers').doc(user.uid).update({
-        'ownerName': ownerName.value.trim(),
-        'storeName': shopName.value.trim(),
-        'phone': phone.value.trim(),
-        'address': address.value.trim(),
-        'shopImage': shopImageUrl.value.trim(),
-        'categories': categories.toList(),
-        'latitude': latitude.value,
-        'longitude': longitude.value,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-
-      selectedImage.value = null;
-
-      AppSnackbar.success('Profile updated successfully.');
-    } on FirebaseException catch (e) {
-      AppSnackbar.error(e.message ?? 'Unable to update profile.');
-    } catch (e) {
-      AppSnackbar.error('Something went wrong while updating profile.');
-    } finally {
-      isSaving.value = false;
-    }
-  }
-
   //temprory code
   Future<String?> uploadShopImage(XFile image) async {
     try {
       isUploadingImage.value = true;
 
-      // Cloudinary upload baad mein add karenge.
-      // Abhi image upload nahi hogi.
+      final String? imageUrl = await CloudinaryService.uploadImage(
+        image: image,
+        folder: 'shop_profiles',
+      );
 
-      return null;
+      if (imageUrl == null || imageUrl.isEmpty) {
+        AppSnackbar.error('Unable to upload shop image.');
+        return null;
+      }
+
+      return imageUrl;
     } catch (e) {
       AppSnackbar.error('Unable to upload shop image.');
       return null;
