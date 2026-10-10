@@ -13,8 +13,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # 1. Setup Flutter SDK in the GitHub runner
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+          channel: 'stable'
+
+      # 2. Get dependencies
+      - run: flutter pub get
+
+      # 3. Build Flutter for Web (Required for Firebase Hosting)
+      - run: flutter build web --release
+
+      # 4. Deploy to Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BAZARLIVE_FEE1A }}
           projectId: bazarlive-fee1a
+          firebaseJson: 'firebase.json'
