@@ -269,43 +269,69 @@ class ProfileView extends GetView<ProfileController> {
   // ───────────────────────── AVATAR ─────────────────────────
 
   Widget _buildProfileImage() {
-    if (controller.selectedImage.value != null) {
-      return FutureBuilder<Uint8List>(
-        future: controller.selectedImage.value!.readAsBytes(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return _imageContainer(
-              Center(
+    // Apna Obx, taaki image/loader ka state change hote hi sirf ye rebuild ho
+    return Obx(() {
+      final bytes = controller.previewBytes.value;
+      final bool uploading = controller.isUploadingImage.value;
+      final String url = controller.shopImageUrl.value;
+
+      Widget content;
+
+      if (bytes != null) {
+        // Naya chuna hua image + upload ke dauran loader overlay
+        content = Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.memory(bytes, fit: BoxFit.cover),
+            if (uploading)
+              Container(
+                color: Colors.black.withValues(alpha: 0.45),
+                child: const Center(
+                  child: SizedBox(
+                    height: 26,
+                    width: 26,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      } else if (url.isNotEmpty) {
+        // Network image: jab tak load na ho, loader dikhega
+        content = Image.network(
+          url,
+          key: ValueKey(url),
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, progress) {
+            if (progress == null) return child;
+
+            final total = progress.expectedTotalBytes;
+
+            return Center(
+              child: SizedBox(
+                height: 26,
+                width: 26,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
                   color: AppColors.primary,
+                  value: total != null
+                      ? progress.cumulativeBytesLoaded / total
+                      : null,
                 ),
               ),
             );
-          }
-
-          if (snapshot.hasData) {
-            return _imageContainer(
-              Image.memory(snapshot.data!, fit: BoxFit.cover),
-            );
-          }
-
-          return _imageContainer(_storeIcon());
-        },
-      );
-    }
-
-    if (controller.shopImageUrl.value.isNotEmpty) {
-      return _imageContainer(
-        Image.network(
-          controller.shopImageUrl.value,
-          fit: BoxFit.cover,
+          },
           errorBuilder: (_, __, ___) => _storeIcon(),
-        ),
-      );
-    }
+        );
+      } else {
+        content = _storeIcon();
+      }
 
-    return _imageContainer(_storeIcon());
+      return _imageContainer(content);
+    });
   }
 
   Widget _storeIcon() {

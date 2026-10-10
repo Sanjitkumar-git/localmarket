@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -29,6 +31,8 @@ class ProfileController extends GetxController {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final Rxn<Uint8List> previewBytes = Rxn<Uint8List>();
 
   final RxList<String> categories = <String>[].obs;
   @override
@@ -91,16 +95,6 @@ class ProfileController extends GetxController {
         return;
       }
 
-      if (selectedImage.value != null) {
-        final String? uploadedUrl = await uploadShopImage(selectedImage.value!);
-
-        if (uploadedUrl == null || uploadedUrl.isEmpty) {
-          return;
-        }
-
-        shopImageUrl.value = uploadedUrl;
-      }
-
       await _firestore.collection('shopkeepers').doc(user.uid).update({
         'ownerName': ownerName.value.trim(),
         'storeName': shopName.value.trim(),
@@ -134,33 +128,63 @@ class ProfileController extends GetxController {
         maxHeight: 1200,
       );
 
-      if (image != null) {
-        selectedImage.value = image;
-      }
+      if (image == null) return;
+
+      // Turant preview dikhao (bytes ek baar read hote hain, flicker nahi hota)
+      selectedImage.value = image;
+      previewBytes.value = await image.readAsBytes();
+
+      await _uploadAndSaveShopImage(image);
     } catch (e) {
+      selectedImage.value = null;
+      previewBytes.value = null;
       AppSnackbar.error('Unable to select image.');
     }
   }
 
-  //temprory code
-  Future<String?> uploadShopImage(XFile image) async {
+  Future<void> _uploadAndSaveShopImage(XFile image) async {
+    final User? user = _auth.currentUser;
+
+    if (user == null) {
+      AppSnackbar.error('User is not logged in.');
+      selectedImage.value = null;
+      previewBytes.value = null;
+      return;
+    }
+
     try {
       isUploadingImage.value = true;
 
-      final String? imageUrl = await CloudinaryService.uploadImage(
+      final String? url = await CloudinaryService.uploadImage(
         image: image,
         folder: 'shop_profiles',
       );
 
-      if (imageUrl == null || imageUrl.isEmpty) {
+      if (url == null || url.isEmpty) {
         AppSnackbar.error('Unable to upload shop image.');
-        return null;
+        selectedImage.value = null;
+        previewBytes.value = null;
+        return;
       }
 
-      return imageUrl;
+      await _firestore.collection('shopkeepers').doc(user.uid).update({
+        'shopImage': url,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      shopImageUrl.value = url;
+      selectedImage.value = null;
+      previewBytes.value = null;
+
+      AppSnackbar.success('Shop image updated.');
+    } on FirebaseException catch (e) {
+      AppSnackbar.error(e.message ?? 'Unable to save shop image.');
+      selectedImage.value = null;
+      previewBytes.value = null;
     } catch (e) {
-      AppSnackbar.error('Unable to upload shop image.');
-      return null;
+      AppSnackbar.error('Something went wrong while uploading image.');
+      selectedImage.value = null;
+      previewBytes.value = null;
     } finally {
       isUploadingImage.value = false;
     }

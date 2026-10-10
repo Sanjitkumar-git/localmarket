@@ -45,6 +45,9 @@ class AddProductController extends GetxController {
 
   final RxList<String> shopCategories = <String>[].obs;
 
+  // Debug ke liye true rakho. Release se pehle false kar do.
+  static const bool _showDebugErrors = true;
+
   @override
   void onInit() {
     super.onInit();
@@ -173,7 +176,13 @@ class AddProductController extends GetxController {
         isUploadingImage.value = false;
 
         if (uploadedUrl == null || uploadedUrl.isEmpty) {
-          AppSnackbar.error('Unable to upload product image.');
+          debugPrint('Upload failed: ${CloudinaryService.lastError}');
+
+          AppSnackbar.error(
+            _showDebugErrors && CloudinaryService.lastError.isNotEmpty
+                ? 'Upload failed: ${CloudinaryService.lastError}'
+                : 'Unable to upload product image.',
+          );
           return;
         }
 
@@ -212,6 +221,7 @@ class AddProductController extends GetxController {
     } on FirebaseException catch (e) {
       AppSnackbar.error(e.message ?? 'Failed to add product.');
     } catch (e) {
+      debugPrint('addProduct error: $e');
       AppSnackbar.error('Something went wrong.');
     } finally {
       isUploadingImage.value = false;
