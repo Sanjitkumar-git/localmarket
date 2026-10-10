@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:localmarket/users/auth/bindings/home_binding.dart';
 import 'package:localmarket/users/auth/bindings/sign_in_bindings.dart';
 import 'package:localmarket/users/auth/bindings/sign_up_bindings.dart';
 import 'package:localmarket/users/auth/view/fotgot_screen.dart';
@@ -20,7 +21,11 @@ class UserPages {
       page: () => const SignUpScreen(),
       binding: UserSignUpBinding(),
     ),
-    GetPage(name: _Paths.HOME, page: () => const HomeScreen()),
+    GetPage(
+  name: _Paths.HOME,
+  page: () => const HomeScreen(),
+  binding: HomeBinding(),
+),
     GetPage(name: _Paths.FORGOTPAGE, page: () => const ForgotScreen()),
   ];
 }

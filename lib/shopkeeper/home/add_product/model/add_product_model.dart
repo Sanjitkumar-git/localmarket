@@ -8,7 +8,9 @@ class ProductModel {
   final String description;
   final double price;
   final String category;
-
+  final String imageUrl;
+  final double? shopLat;
+  final double? shopLng;
   final double stockQuantity;
   final String stockUnit;
 
@@ -19,7 +21,6 @@ class ProductModel {
   final DateTime? offerEndDate;
 
   final bool isActive;
-  final String imageUrl;
 
   ProductModel({
     required this.productId,
@@ -29,7 +30,9 @@ class ProductModel {
     required this.description,
     required this.price,
     required this.category,
-
+    this.imageUrl = '',
+    this.shopLat,
+    this.shopLng,
     required this.stockQuantity,
     required this.stockUnit,
 
@@ -40,7 +43,6 @@ class ProductModel {
     required this.offerEndDate,
 
     required this.isActive,
-    required this.imageUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -52,7 +54,9 @@ class ProductModel {
       'description': description,
       'price': price,
       'category': category,
-
+      'imageUrl': imageUrl,
+      'shopLat': shopLat,
+      'shopLng': shopLng,
       // Stock
       'stockQuantity': stockQuantity,
       'stockUnit': stockUnit,
@@ -72,7 +76,6 @@ class ProductModel {
       'isActive': isActive,
 
       'createdAt': FieldValue.serverTimestamp(),
-      'imageUrl': imageUrl,
     };
   }
 
@@ -83,7 +86,9 @@ class ProductModel {
       shopName: map['shopName'] ?? '',
       name: map['name'] ?? '',
       description: map['description'] ?? '',
-
+      imageUrl: (map['imageUrl'] ?? '').toString(),
+      shopLat: (map['shopLat'] as num?)?.toDouble(),
+      shopLng: (map['shopLng'] as num?)?.toDouble(),
       price: (map['price'] ?? 0).toDouble(),
 
       category: map['category'] ?? '',
@@ -110,8 +115,6 @@ class ProductModel {
 
       // Status
       isActive: map['isActive'] ?? true,
-
-      imageUrl: map['imageUrl'] ?? '',
     );
   }
 
