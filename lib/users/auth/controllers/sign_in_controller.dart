@@ -7,13 +7,13 @@ import 'package:localmarket/users/utils/form_inputs.dart';
 
 class UserSigninController extends GetxController {
   final LoginForm form = LoginForm();
-  
+
   late final TextEditingController emailTextController;
   late final TextEditingController passwordTextController;
   late final FocusNode emailAddressNode;
   late final FocusNode passwordNode;
   late final TapGestureRecognizer tapGestureRecognizer;
-  
+
   bool isChecked = false;
 
   @override
@@ -34,7 +34,7 @@ class UserSigninController extends GetxController {
 
     tapGestureRecognizer = TapGestureRecognizer()
       ..onTap = () async {
-         await Get.toNamed(Routes.SIGNUPSCREEN);
+        await Get.toNamed(Routes.SIGNUPSCREEN);
       };
   }
 
@@ -44,13 +44,12 @@ class UserSigninController extends GetxController {
   }
 
   Future<void> confirmLogin() async {
-   
     form.email = EmailInput.dirty(value: emailTextController.text);
     form.password = PasswordInput.dirty(value: passwordTextController.text);
     update();
 
     if (form.isValid) {
-       Get.offAllNamed(Routes.HOME);
+      Get.offAllNamed(Routes.HOME);
     }
   }
 
@@ -70,7 +69,7 @@ class LoginForm with FormzMixin {
     this.email = const EmailInput.pure(),
     this.password = const PasswordInput.pure(),
   });
-  
+
   EmailInput email;
   PasswordInput password;
 

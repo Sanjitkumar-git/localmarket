@@ -7,10 +7,6 @@ import 'package:localmarket/shopkeeper/auth/model/shopkeeper_model.dart';
 import 'package:localmarket/widget/app_language.dart';
 
 class PartnerSignUpController extends GetxController {
-  // ============================================================
-  // TEXT CONTROLLERS
-  // ============================================================
-
   final TextEditingController fullNameController = TextEditingController();
 
   final TextEditingController emailController = TextEditingController();
@@ -19,19 +15,11 @@ class PartnerSignUpController extends GetxController {
 
   final TextEditingController passwordController = TextEditingController();
 
-  // ============================================================
-  // REACTIVE VARIABLES
-  // ============================================================
-
   final RxList<String> selectedCategories = <String>[].obs;
 
   final RxBool isPasswordVisible = false.obs;
 
   final RxBool isLoading = false.obs;
-
-  // ============================================================
-  // SHOP CATEGORIES
-  // ============================================================
 
   final List<Map<String, String>> shopCategories = [
     {
@@ -89,17 +77,9 @@ class PartnerSignUpController extends GetxController {
     {'en': 'Other', 'hi': 'अन्य', 'ne': 'अन्य'},
   ];
 
-  // ============================================================
-  // PASSWORD VISIBILITY
-  // ============================================================
-
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
-
-  // ============================================================
-  // CATEGORIES
-  // ============================================================
 
   void setCategories(List<String> categories) {
     selectedCategories.assignAll(categories);
@@ -108,10 +88,6 @@ class PartnerSignUpController extends GetxController {
   void removeCategory(String category) {
     selectedCategories.remove(category);
   }
-
-  // ============================================================
-  // CATEGORY NAME
-  // ============================================================
 
   String getCategoryName(String categoryEn) {
     final category = shopCategories.firstWhere(
@@ -126,15 +102,7 @@ class PartnerSignUpController extends GetxController {
     );
   }
 
-  // ============================================================
-  // REGISTER SHOPKEEPER
-  // ============================================================
-
   Future<String?> registerShopkeeper() async {
-    // ----------------------------------------------------------
-    // VALIDATION
-    // ----------------------------------------------------------
-
     if (fullNameController.text.trim().isEmpty) {
       return AppLanguage.tr(
         en: 'Full name is required',
@@ -175,17 +143,9 @@ class PartnerSignUpController extends GetxController {
       );
     }
 
-    // ----------------------------------------------------------
-    // LOADING
-    // ----------------------------------------------------------
-
     isLoading.value = true;
 
     try {
-      // --------------------------------------------------------
-      // CREATE FIREBASE AUTH ACCOUNT
-      // --------------------------------------------------------
-
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: emailController.text.trim(),
@@ -202,10 +162,6 @@ class PartnerSignUpController extends GetxController {
         );
       }
 
-      // --------------------------------------------------------
-      // CREATE SHOPKEEPER MODEL
-      // --------------------------------------------------------
-
       final model = ShopkeeperModel(
         uid: user.uid,
         fullName: fullNameController.text.trim(),
@@ -215,10 +171,6 @@ class PartnerSignUpController extends GetxController {
         role: 'partner',
       );
 
-      // --------------------------------------------------------
-      // SAVE TO FIRESTORE
-      // --------------------------------------------------------
-
       await FirebaseFirestore.instance
           .collection('shopkeepers')
           .doc(user.uid)
@@ -226,10 +178,6 @@ class PartnerSignUpController extends GetxController {
 
       return null;
     } on FirebaseAuthException catch (e) {
-      // --------------------------------------------------------
-      // FIREBASE AUTH ERRORS
-      // --------------------------------------------------------
-
       switch (e.code) {
         case 'email-already-in-use':
           return AppLanguage.tr(
@@ -267,17 +215,9 @@ class PartnerSignUpController extends GetxController {
         ne: 'केही गलत भयो',
       );
     } finally {
-      // --------------------------------------------------------
-      // STOP LOADING
-      // --------------------------------------------------------
-
       isLoading.value = false;
     }
   }
-
-  // ============================================================
-  // CLEANUP
-  // ============================================================
 
   @override
   void onClose() {

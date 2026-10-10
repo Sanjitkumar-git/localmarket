@@ -6,37 +6,23 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:localmarket/shopkeeper/routes/app_routes.dart';
 
 import 'package:localmarket/widget/app_language.dart';
+import 'package:localmarket/widget/validation_controller.dart';
+
 
 class PartnerSigninController extends GetxController {
-  // ============================================================
-  // FORM
-  // ============================================================
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
 
-  // ============================================================
-  // REACTIVE VARIABLES
-  // ============================================================
-
   final RxBool isPasswordVisible = false.obs;
 
   final RxBool isLoading = false.obs;
 
-  // ============================================================
-  // TOGGLE PASSWORD
-  // ============================================================
-
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
-
-  // ============================================================
-  // FIREBASE ERROR MESSAGE
-  // ============================================================
 
   String firebaseErrorMessage(FirebaseAuthException error) {
     switch (error.code) {
@@ -92,10 +78,6 @@ class PartnerSigninController extends GetxController {
     }
   }
 
-  // ============================================================
-  // EMAIL LOGIN
-  // ============================================================
-
   Future<void> signInWithEmail() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -129,17 +111,13 @@ class PartnerSigninController extends GetxController {
 
       await verifyPartnerAndOpenDashboard(user);
     } on FirebaseAuthException catch (error) {
-      _showMessage(firebaseErrorMessage(error));
+      AppSnackbar.error(firebaseErrorMessage(error));
     } catch (error) {
-      _showMessage(error.toString().replaceFirst('Exception: ', ''));
+      AppSnackbar.error(error.toString().replaceFirst('Exception: ', ''));
     } finally {
       isLoading.value = false;
     }
   }
-
-  // ============================================================
-  // GOOGLE LOGIN
-  // ============================================================
 
   Future<void> signInWithGoogle() async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -186,21 +164,17 @@ class PartnerSigninController extends GetxController {
 
       await verifyPartnerAndOpenDashboard(user);
     } on FirebaseAuthException catch (error) {
-      _showMessage(firebaseErrorMessage(error));
+      AppSnackbar.error(firebaseErrorMessage(error));
     } catch (error) {
       final message = error.toString().replaceFirst('Exception: ', '');
 
       if (!message.toLowerCase().contains('cancel')) {
-        _showMessage(message);
+        AppSnackbar.error(message);
       }
     } finally {
       isLoading.value = false;
     }
   }
-
-  // ============================================================
-  // VERIFY PARTNER
-  // ============================================================
 
   Future<void> verifyPartnerAndOpenDashboard(User user) async {
     final partnerDoc = await FirebaseFirestore.instance
@@ -208,25 +182,13 @@ class PartnerSigninController extends GetxController {
         .doc(user.uid)
         .get();
 
-    // ==========================================================
-    // NEW USER
-    // ==========================================================
-
     if (!partnerDoc.exists) {
       Get.toNamed(AppRoutes.shopRegistration, arguments: user);
 
       return;
     }
 
-    // ==========================================================
-    // EXISTING USER
-    // ==========================================================
-
     final data = partnerDoc.data();
-
-    // ==========================================================
-    // NOT PARTNER
-    // ==========================================================
 
     if (data?['role'] != 'partner') {
       await FirebaseAuth.instance.signOut();
@@ -244,39 +206,17 @@ class PartnerSigninController extends GetxController {
     // PARTNER LOGIN SUCCESS
     // ==========================================================
 
-    _showMessage(
+    AppSnackbar.success(
       AppLanguage.tr(
         en: 'Login successful',
         hi: 'लॉगिन सफल रहा',
         ne: 'लगइन सफल भयो',
       ),
-      isError: false,
     );
 
     // Go to shopkeeper bottom navigation
     Get.offAllNamed(AppRoutes.shopkeeperbottom);
   }
-
-  // ============================================================
-  // SNACKBAR
-  // ============================================================
-
-  void _showMessage(String message, {bool isError = true}) {
-    Get.snackbar(
-      '',
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      margin: const EdgeInsets.all(16),
-      backgroundColor: isError ? Colors.red.shade700 : Colors.green.shade700,
-      colorText: Colors.white,
-      borderRadius: 12,
-      duration: const Duration(seconds: 3),
-    );
-  }
-
-  // ============================================================
-  // DISPOSE
-  // ============================================================
 
   @override
   void onClose() {

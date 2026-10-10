@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:localmarket/services/location_service.dart';
+import 'package:localmarket/shopkeeper/routes/app_routes.dart';
+
+import 'package:localmarket/widget/validation_controller.dart';
 
 class DashboardController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -46,6 +49,16 @@ class DashboardController extends GetxController {
     }
   }
 
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+
+      Get.offAllNamed(AppRoutes.signin);
+    } catch (e) {
+      AppSnackbar.error('Failed to logout.');
+    }
+  }
+
   Future<void> getUserLocation() async {
     try {
       isLoadingLocation.value = true;
@@ -66,16 +79,5 @@ class DashboardController extends GetxController {
 
   Future<void> refreshDashboard() async {
     await loadDashboardData();
-  }
-
-  Future<void> logout() async {
-    try {
-      await _auth.signOut();
-
-      // Yahan apne login route ka naam use karna
-      Get.offAllNamed('/partner-signin');
-    } catch (e) {
-      Get.log('Logout error: $e');
-    }
   }
 }

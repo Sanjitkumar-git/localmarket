@@ -22,23 +22,17 @@ class _LanguageSelectionPageState extends State<LanguageSelectionPage> {
     {'name': 'Nepali', 'nativeName': 'नेपाली', 'flag': '🇳🇵'},
   ];
 
-  void _continue() async {
-    AppLanguage.currentLanguage = _selectedLanguage;
+  Future<void> _continue() async {
+    await AppLanguage.changeLanguage(context, _selectedLanguage);
 
-    if (_selectedLanguage == 'Hindi') {
-      await context.setLocale(const Locale('hi'));
-    } else if (_selectedLanguage == 'Nepali') {
-      await context.setLocale(const Locale('ne'));
-    } else {
-      await context.setLocale(const Locale('en'));
+    if (!mounted) {
+      return;
     }
 
-    if (mounted) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const RoleSelectionPage()),
-      );
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const RoleSelectionPage()),
+    );
   }
 
   @override

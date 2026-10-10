@@ -2,6 +2,7 @@ analyzer:
   errors:
     deprecated_member_use: ignore
     unreachable_switch_default: ignore
+    unused_local_variable: ignore
   exclude:
     - build/**
     - android/**
